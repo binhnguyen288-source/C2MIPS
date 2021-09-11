@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <title>C to MIPS Compiler</title>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU" crossorigin="anonymous">
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-/bQdsTh/da6pkI1MST/rWKFNjaCP5gBSY4sEBT38Q/9RBh9AH40zEOg7Hlq2THRZ" crossorigin="anonymous"></script>
+        <script src="./compiler.js"></script>
+        <style>
+            textarea{
+                tab-size: 4;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="container-flex pt-4">
+
+            <h1>Simple C to MIPS Compiler (WIP)</h1>
+            Welcome to a simple C to MIPS Compiler for Computer Architecture, since the compiler ain't completed yet so we only have a few options to choose from, the current only supported features are
+            <br>
+            <ul>
+                <li>Word integer arithmetic (maximum 10 register).</li>
+                <li>Word integer array (maximum 8).</li>
+                <li>Printing Immediate string.</li>
+            </ul>
+            Note that this is not even a full C compiler (yet). Only the assignment operator = is accepted, no pointer arithmetic has been implemented other than array member accessing, no floating number support, no function declaration, and the list go on. The program prewritten below show nearly all implemented features so far.
+            <hr>
+            <div class="row">
+                <div class="col-sm-6">
+                  <div class="card">
+                    <div class="card-body">
+                      <h5 class="card-title">C Source Code</h5>
+                      <textarea class="form-control" id="SourceC" rows="20"></textarea>
+                    </div>
+                  </div>
+                  
+                </div>
+                <div class="col-sm-6">
+                  <div class="card">
+                    <div class="card-body">
+                      <h5 class="card-title">MIPS Compiled</h5>
+                      <textarea class="form-control" id="MIPS" rows="20"></textarea>
+                    </div>
+                  </div>
+                </div>
+            </div>
+            
+        </div>
+        <script>
+            Module['onRuntimeInitialized'] = () => {
+
+                const src = document.getElementById('SourceC');
+                const mips = document.getElementById('MIPS');
+
+                src.onkeydown = ev => {
+                    if (ev.key.toUpperCase() == "TAB") {
+                        ev.preventDefault();
+                        const next = src.selectionStart + 1;
+                        src.value = src.value.substr(0, src.selectionStart) + '\t' + src.value.substr(src.selectionEnd);
+                        src.selectionStart = src.selectionEnd = next;
+                    }
+                }
+
+                src.value = `
+                
+int main() {
+    int arr[] = {1, 2, 3};
+    int sum = arr[0] + arr[1] + arr[2];
+    printString("The sum of 3 elements of arr1 is: ");
+    printInt(sum);
+    printString("\\n");
+    int a;
+    readInt(a);
+    arr[0] = 1 + 2 * (a + arr[0]);
+    printInt(arr[0]);
+}`;
+                setInterval(compileSource, 2000);
+
+                //document.getElementById('compile').onclick = compileSource;
+                function compileSource() {
+                    try {
+                        mips.value = Module.ccall('compileSource', 'string', ['string'], [src.value]);
+                    }
+                    catch (e) {
+                        mips.value = e;
+                    }
+                }
+            }
+        </script>
+    </body>
+</html>
