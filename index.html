@@ -64,14 +64,14 @@
                 }
 
                 src.value = `
-
-int arr[] = {1, 2, 3};        
+                
 int main() {
-    
+	int arr[3] = {1, 2, 3};    
     int sum = arr[0] + arr[1] + arr[2];
-    printString("The sum of 3 elements of arr1 is: ");
+	char msg[100] = "The sum of 3 elements of arr is: ";
+    printString(msg);
     printInt(sum);
-    printChar('\\n');
+    printChar('\n');
     int a;
     readInt(a);
     arr[0] = 1 + 2 * (a + arr[0]);
