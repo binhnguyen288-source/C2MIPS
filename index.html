@@ -65,17 +65,25 @@
 
                 src.value = `
 
+int strlen(char* msg) {
+	int i = 0;
+	while (msg[i] != '\\0') {
+		++i;
+	}
+	return i;
+}
+
 int main() {
-	int arr[] = {1, 2, 3};    
-    int sum = arr[0] + arr[1] + arr[2];
-	char msg[] = "The sum of 3 elements of arr is: ";
-    printString(msg);
-    printInt(sum);
-    printChar('\\n');
-    int a;
-    readInt(a);
-    arr[0] = 1 + 2 * (a + arr[0]);
-    printInt(arr[0]);
+	char msg[] = "Ho Chi Minh City - University of Technology";
+	int len = strlen(msg);
+	int l = 0, r = len - 1;
+	while (l < r) {
+		char temp = msg[l];
+		msg[l] = msg[r];
+		msg[r] = temp;
+		++l; --r;
+	}
+	printString(msg);
 }`;
                 setInterval(compileSource, 2000);
 
