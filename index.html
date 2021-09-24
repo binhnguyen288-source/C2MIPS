@@ -24,6 +24,7 @@
                 <li>Word integer array.</li>
                 <li>Char array</li>
                 <li>Function calling</li>
+                <li>Mark local variable as register</li>
             </ul>
             Note that this is not even a full C compiler (yet).
             <hr>
@@ -66,7 +67,7 @@
                 src.value = `
 
 int strlen(char* msg) {
-	int i = 0;
+	register int i = 0;
 	while (msg[i] != '\\0') {
 		++i;
 	}
@@ -75,8 +76,8 @@ int strlen(char* msg) {
 
 int main() {
 	char msg[] = "Ho Chi Minh City - University of Technology";
-	int len = strlen(msg);
-	int l = 0, r = len - 1;
+	register int len = strlen(msg);
+	register int l = 0, r = len - 1;
 	while (l < r) {
 		char temp = msg[l];
 		msg[l] = msg[r];
